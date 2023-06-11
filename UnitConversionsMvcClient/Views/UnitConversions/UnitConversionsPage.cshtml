@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SelectListItem>
+
+@{
+    ViewData["Title"] = "Unit Conversions Page";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<div class="app-frame">
+    @using (Html.BeginForm("", ""))
+    {
+        <fieldset>
+            <div class="editor-label">
+                Value to convert:
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("txtFromValue", "", new { @class = "form-input" })
+            </div>
+
+            <br/>
+
+            <div class="editor-label">
+                Select conversion type
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("ConversionType", Model, " ", new { @class = "form-input" })
+            </div>
+
+            <br/>
+
+            <p>
+                <input type="submit" value="Convert" id="Convert" class = "form-input"/>
+            </p>
+
+            <div class="editor-label">
+                Converted value:
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("txtConvertedValue", "", new { @class = "form-input" })
+            </div>
+        </fieldset>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").on("submit", function(e) {
+            var formConversionData = $(this).serialize();
+            $.ajax({
+                type: "POST",
+                url: "Convert",
+                data: { fromValue: $("#txtFromValue").val(), conversionTypeCode: $("#ConversionType").val() },
+                success: function (convertedValue) {
+                    $("#txtConvertedValue").val(convertedValue);
+                }
+            });
+            e.preventDefault();
+        });
+    });
+</script>
+
+ 
