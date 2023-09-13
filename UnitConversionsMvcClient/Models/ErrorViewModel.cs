@@ -1,4 +1,4 @@
-namespace UnitConversionsMvcClient.Models
+namespace MacPConversionsMvcClient.Models
 {
     public class ErrorViewModel
     {

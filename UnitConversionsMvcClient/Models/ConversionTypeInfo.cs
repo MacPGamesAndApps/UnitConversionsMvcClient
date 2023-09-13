@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace UnitConversionsMvcClient.Models
+namespace MacPConversionsMvcClient.Models
 {
     public class ConversionTypeInfo
     {

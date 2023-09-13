@@ -21,10 +21,18 @@ body {
   margin-bottom: 60px;
 }
 
-.app-frame {
+.app-frame-unit {
     border: groove;
     padding: 1em;
     background-image: linear-gradient(#d3ebf6, #bee5f7, #5ac4f5, #0384bf);
+    width: 30%;
+    min-width: 384px
+}
+
+.app-frame-base {
+    border: groove;
+    padding: 1em;
+    background-image: linear-gradient(#f6f2d3, #e8d28c, #e0a368, #e17537);
     width: 30%;
     min-width: 384px
 }
