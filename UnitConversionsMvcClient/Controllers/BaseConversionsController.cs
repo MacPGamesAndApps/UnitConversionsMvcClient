@@ -4,33 +4,33 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MacPConversionsMvcClient.Models;
 using MacPConversionsMvcClient.Utils;
+using Microsoft.FeatureManagement.Mvc;
 
-namespace UnitConversionsMvcClient.Controllers
+namespace MacPConversionsMvcClient.Controllers
 {
-    public class UnitConversionsController : Controller
+    [FeatureGate(nameof(FeatureFlags.BaseConversions))]
+    public class BaseConversionsController : Controller
     {
-        private readonly ILogger<UnitConversionsController> _logger;
+        private readonly ILogger<BaseConversionsController> _logger;
         private ErrorViewModel? _errorViewModel;
 
-        public UnitConversionsController(ILogger<UnitConversionsController> logger)
+        public BaseConversionsController(ILogger<BaseConversionsController> logger)
         {
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            return Redirect("UnitConversions/UnitConversionsPage");
+            return Redirect("BaseConversions/BaseConversionsPage");
         }
 
-        public async Task<IActionResult> UnitConversionsPage()
+        public async Task<IActionResult> BaseConversionsPage()
         {
             IEnumerable<SelectListItem>? conversionTypeList = new List<SelectListItem>();
             try
@@ -50,27 +50,21 @@ namespace UnitConversionsMvcClient.Controllers
             return View(conversionTypeList);
         }
 
-        public async Task<JsonResult> ConvertUnit(double fromValue, int conversionTypeCode)
+        public async Task<JsonResult> ConvertBase(string fromValue, int conversionTypeCode)
         {
             string results = string.Empty;
             try
             {
-                double? convertedValue = null;
-                UnitConversionData conversionData = new UnitConversionData { ValueFrom = fromValue, ConversionType = (byte)conversionTypeCode };
+                BaseConversionData conversionData = new BaseConversionData { ValueFrom = fromValue, ConversionType = (byte)conversionTypeCode };
 
                 using (HttpClient httpClient = new HttpClient())
                 {
                     string postContent = JsonConvert.SerializeObject(conversionData);
                     StringContent stringContent = new StringContent(postContent, Encoding.UTF8, "application/json");
                     stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync("http://localhost:60937/api/unitconversions/convert", stringContent);
-                    double responseValue = 0;
-                    if (Double.TryParse(await httpResponseMessage.Content.ReadAsStringAsync(), out responseValue))
-                    {
-                        convertedValue = responseValue;
-                    }
+                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync("http://localhost:60937/api/baseconversions/convert", stringContent);
+                    results = await httpResponseMessage.Content.ReadAsStringAsync();
                 }
-                results = convertedValue.ToString();
             }
             catch (HttpRequestException ex)
             {
@@ -78,7 +72,7 @@ namespace UnitConversionsMvcClient.Controllers
             }
             catch (Exception ex)
             {
-                results =  ex.Message;
+                results = ex.Message;
             }
             return Json(results);
         }

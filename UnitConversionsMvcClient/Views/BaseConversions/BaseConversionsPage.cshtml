@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<SelectListItem>
 
 @{
-    ViewData["Title"] = "Unit Conversions Page";
+    ViewData["Title"] = "Base Conversions Page";
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-<div class="app-frame-unit">
+<div class="app-frame-base">
     @using (Html.BeginForm("", ""))
     {
         <fieldset>
@@ -20,7 +20,7 @@
             <br/>
 
             <div class="editor-label">
-                Select unit conversion type
+                Select base conversion type
             </div>
             <div class="editor-field">
                 @Html.DropDownList("ConversionType", Model, " ", new { @class = "form-input" })
@@ -48,7 +48,7 @@
             var formConversionData = $(this).serialize();
             $.ajax({
                 type: "POST",
-                url: "ConvertUnit",
+                url: "ConvertBase",
                 data: { fromValue: $("#txtFromValue").val(), conversionTypeCode: $("#ConversionType").val() },
                 success: function (convertedValue) {
                     $("#txtConvertedValue").val(convertedValue);

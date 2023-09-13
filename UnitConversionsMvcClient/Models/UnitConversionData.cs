@@ -1,6 +1,6 @@
-﻿namespace UnitConversionsMvcClient.Models
+﻿namespace MacPConversionsMvcClient.Models
 {
-    public class ConversionData
+    public class UnitConversionData
     {
         public double ValueFrom { get; set; }
         public byte ConversionType { get; set; }
