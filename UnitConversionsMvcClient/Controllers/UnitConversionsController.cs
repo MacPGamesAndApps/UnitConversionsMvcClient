@@ -52,7 +52,7 @@ namespace UnitConversionsMvcClient.Controllers
 
         public async Task<JsonResult> ConvertUnit(double fromValue, int conversionTypeCode)
         {
-            string results = string.Empty;
+            string? results = string.Empty;
             try
             {
                 double? convertedValue = null;
@@ -63,7 +63,7 @@ namespace UnitConversionsMvcClient.Controllers
                     string postContent = JsonConvert.SerializeObject(conversionData);
                     StringContent stringContent = new StringContent(postContent, Encoding.UTF8, "application/json");
                     stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync("http://localhost:60937/api/unitconversions/convert", stringContent);
+                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(Helpers.GetEndpointRootUrl() + "api/unitconversions/convert", stringContent);
                     double responseValue = 0;
                     if (Double.TryParse(await httpResponseMessage.Content.ReadAsStringAsync(), out responseValue))
                     {
