@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System;
 
 namespace MacPConversionsMvcClient.Utils
 {
@@ -18,13 +19,27 @@ namespace MacPConversionsMvcClient.Utils
 
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpResponseMessage httpResponseMessage = await httpClient.GetAsync("http://localhost:60937/api/unitconversions/gettypes");
+                HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(GetEndpointRootUrl() + "api/unitconversions/gettypes");
                 conversionTypeListJason = await httpResponseMessage.Content.ReadAsStringAsync();
             }
 
             conversionTypeList = JsonConvert.DeserializeObject<List<ConversionTypeInfo>>(conversionTypeListJason).Select(ctl => ctl.MapTo());
 
             return conversionTypeList;
+        }
+
+        public static string GetEndpointRootUrl()
+        {
+            string endpointRootUrl = string.Empty;
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                endpointRootUrl = Constants.ConversionServiceEndPoints.PROD_UNIT_CONVERSION_ENDPOINT;
+            }
+            else
+            {
+                endpointRootUrl = Constants.ConversionServiceEndPoints.DEV_UNIT_CONVERSION_ENDPOINT;
+            }
+            return endpointRootUrl;
         }
     }
 }
