@@ -4,17 +4,17 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MacPConversionsMvcClient.Models;
 using MacPConversionsMvcClient.Utils;
+using Microsoft.FeatureManagement.Mvc;
 
 namespace UnitConversionsMvcClient.Controllers
 {
+    [FeatureGate(nameof(FeatureFlags.UnitConversions))]
     public class UnitConversionsController : Controller
     {
         private readonly ILogger<UnitConversionsController> _logger;
@@ -35,7 +35,7 @@ namespace UnitConversionsMvcClient.Controllers
             IEnumerable<SelectListItem>? conversionTypeList = new List<SelectListItem>();
             try
             {
-                conversionTypeList = await Helpers.GetConversionTypes();
+                conversionTypeList = await Helpers.GetConversionTypes(FeatureFlags.UnitConversions);
             }
             catch (HttpRequestException ex)
             {
@@ -63,7 +63,7 @@ namespace UnitConversionsMvcClient.Controllers
                     string postContent = JsonConvert.SerializeObject(conversionData);
                     StringContent stringContent = new StringContent(postContent, Encoding.UTF8, "application/json");
                     stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(Helpers.GetEndpointRootUrl() + "api/unitconversions/convert", stringContent);
+                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(Helpers.GetEndpointRootUrl(FeatureFlags.UnitConversions) + "convert", stringContent);
                     double responseValue = 0;
                     if (Double.TryParse(await httpResponseMessage.Content.ReadAsStringAsync(), out responseValue))
                     {
