@@ -35,7 +35,7 @@ namespace MacPConversionsMvcClient.Controllers
             IEnumerable<SelectListItem>? conversionTypeList = new List<SelectListItem>();
             try
             {
-                conversionTypeList = await Helpers.GetConversionTypes();
+                conversionTypeList = await Helpers.GetConversionTypes(FeatureFlags.BaseConversions);
             }
             catch (HttpRequestException ex)
             {
@@ -62,7 +62,7 @@ namespace MacPConversionsMvcClient.Controllers
                     string postContent = JsonConvert.SerializeObject(conversionData);
                     StringContent stringContent = new StringContent(postContent, Encoding.UTF8, "application/json");
                     stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync("http://localhost:60937/api/baseconversions/convert", stringContent);
+                    HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(Helpers.GetEndpointRootUrl(FeatureFlags.BaseConversions) + "convert", stringContent);
                     results = await httpResponseMessage.Content.ReadAsStringAsync();
                 }
             }

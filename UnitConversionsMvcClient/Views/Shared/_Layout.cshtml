@@ -12,24 +12,30 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container row-cols-2">
-                <feature name = "@nameof(FeatureFlags.UnitConversions)">
-                    <a class="navbar-brand col-md-2" asp-area="" asp-controller="UnitConversions" asp-action="Index">Unit Conversions MVC Client</a>
-                </feature>
-                <feature name="@nameof(FeatureFlags.BaseConversions)">
-                    <a class="navbar-brand col-md-2" asp-area="" asp-controller="BaseConversions" asp-action="Index">Base Conversions MVC Client</a>
-                </feature>
-            </div>
+            <table>
+                <row>
+                    <td>
+                        <feature name="@nameof(FeatureFlags.UnitConversions)">
+                            <a class="navbar-brand col-md-2" asp-area="" asp-controller="UnitConversions" asp-action="Index">Unit Conversions MVC Client</a>
+                        </feature>
+                    </td>
+                    <td>
+                        <feature name="@nameof(FeatureFlags.BaseConversions)">
+                            <a class="navbar-brand col-md-2" asp-area="" asp-controller="BaseConversions" asp-action="Index">Base Conversions MVC Client</a>
+                        </feature>
+                    </td>
+                </row>
+            </table>
         </nav>
     </header>
-    <div class="container">
+    <div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div>
             &copy; 2023 - MacPConversionsMvcClient
         </div>
     </footer>
