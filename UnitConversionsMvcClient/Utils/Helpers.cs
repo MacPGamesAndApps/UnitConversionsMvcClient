@@ -34,7 +34,7 @@ namespace MacPConversionsMvcClient.Utils
             switch (feature)
             {
                 case FeatureFlags.UnitConversions:
-                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production")
+                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
                     {
                         endpointRootUrl = Constants.ConversionServiceEndPoints.PROD_UNIT_CONVERSION_ENDPOINT;
                     }
@@ -44,7 +44,7 @@ namespace MacPConversionsMvcClient.Utils
                     }
                     break;
                 case FeatureFlags.BaseConversions:
-                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production")
+                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
                     {
                         endpointRootUrl = Constants.ConversionServiceEndPoints.PROD_BASE_CONVERSION_ENDPOINT;
                     }
